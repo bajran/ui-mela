@@ -19,17 +19,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8.15.6
+          cache: 'npm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Build Storybook
-        run: pnpm run build-storybook
+        run: npm run build-storybook
 
       - name: List storybook-static contents
         run: ls -la storybook-static
