@@ -19,13 +19,17 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          cache: 'npm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.6
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: pnpm install --frozen-lockfile
 
       - name: Build Storybook
-        run: npm run build-storybook
+        run: pnpm run build-storybook
 
       - name: List storybook-static contents
         run: ls -la storybook-static
@@ -36,11 +40,11 @@ jobs:
           folder: storybook-static
           branch: gh-pages
           token: ${{ secrets.GITHUB_TOKEN }}
-          repository-name: bajran/uimela
+          repository-name: bajran/ui-mela
 
       - name: Verify deployment
         run: |
           echo "Checking if gh-pages branch exists..."
           git fetch origin gh-pages
           git branch -a
-          echo "Deployment should be available at: https://bajran.github.io/uimela/"
+          echo "Deployment should be available at: https://bajran.github.io/ui-mela/"

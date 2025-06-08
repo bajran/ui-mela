@@ -1,5 +1,5 @@
 {
-  "name": "uimela",
+  "name": "ui-mela",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,8 +10,7 @@
     "format": "prettier --write --ignore-unknown .",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "prepare": "husky"
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.0.17",
@@ -46,7 +45,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
     "eslint-plugin-storybook": "^0.8.0",
-    "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "msw": "^2.2.14",
     "msw-storybook-addon": "^2.0.0",
@@ -62,7 +60,6 @@
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
   },
-  "packageManager": "pnpm@8.15.6+sha256.01c01eeb990e379b31ef19c03e9d06a14afa5250b82e81303f88721c99ff2e6f",
   "msw": {
     "workerDirectory": [
       "public"
