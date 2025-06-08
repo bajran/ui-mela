@@ -27,9 +27,20 @@ jobs:
       - name: Build Storybook
         run: npm run build-storybook
 
+      - name: List storybook-static contents
+        run: ls -la storybook-static
+
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: storybook-static
           branch: gh-pages
           token: ${{ secrets.GITHUB_TOKEN }}
+          repository-name: bajran/uimela
+
+      - name: Verify deployment
+        run: |
+          echo "Checking if gh-pages branch exists..."
+          git fetch origin gh-pages
+          git branch -a
+          echo "Deployment should be available at: https://bajran.github.io/uimela/"
