@@ -7,10 +7,15 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -27,20 +32,48 @@ jobs:
       - name: Build Storybook
         run: npm run build-storybook
 
-      - name: List storybook-static contents
-        run: ls -la storybook-static
+      - name: Debug storybook-static
+        run: |
+          echo "=== Storybook Static Directory Contents ==="
+          ls -la storybook-static
+          echo "=== First 5 files in storybook-static ==="
+          find storybook-static -type f | head -n 5
+          echo "=== Checking for index.html ==="
+          if [ -f storybook-static/index.html ]; then
+            echo "index.html exists"
+            echo "=== First few lines of index.html ==="
+            head -n 5 storybook-static/index.html
+          else
+            echo "index.html not found!"
+          fi
 
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: storybook-static
           branch: gh-pages
           token: ${{ secrets.GITHUB_TOKEN }}
           repository-name: bajran/ui-mela
+          clean: true
+          clean-exclude: |
+            .git
+            .github
+            .gitignore
 
-      - name: Verify deployment
+      - name: Verify gh-pages branch
         run: |
-          echo "Checking if gh-pages branch exists..."
+          echo "=== Checking gh-pages branch ==="
           git fetch origin gh-pages
-          git branch -a
-          echo "Deployment should be available at: https://bajran.github.io/ui-mela/"
+          git checkout gh-pages
+          echo "=== Contents of gh-pages branch ==="
+          ls -la
+          echo "=== Checking for index.html in gh-pages ==="
+          if [ -f index.html ]; then
+            echo "index.html exists in gh-pages"
+          else
+            echo "index.html not found in gh-pages!"
+          fi
+          echo "=== Deployment URL ==="
+          echo "https://bajran.github.io/ui-mela/"
+          echo "If the site is not available immediately, please wait a few minutes for GitHub Pages to update."
